@@ -1,0 +1,56 @@
+<%@LANGUAGE="VBSCRIPT" CODEPAGE="1252"%>
+<%option explicit%>
+<html>
+<head>
+<title>SPRINT</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="css/Web.css" rel="stylesheet" type="text/css">
+<script language="javascript">
+window.status="Delphin Project Hunting, s.l.";
+</script>
+</head>
+<body>
+<table width="100%" height="100%" >
+		<tr>
+		    <td height="45%" class="Texto" valign="bottom"></td>
+		</tr>
+		<tr>
+			<td  align="center">
+				<form action="Conectar.asp" method="post"  name="frmNavegar"><table width="419" height="289" background="imgLogos/Inicio.jpg">
+					<tr>
+						<td width="60%" height="150px">&nbsp;</td>
+						<td width="40%">&nbsp;</td>
+					</tr>
+					<tr>
+						<td class="Texto" align="right">Usuario:</td>
+						<td ><input name="Usuario" type="text" size="20" maxlength="15"></td>
+					</tr>
+					<tr>
+						<td class="Texto" align="right">Contraseña:</td>
+						<td><input name="pwd" type="password" size="20" maxlength="8"></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><input class="button" name="btnAceptar" type="submit" value="Aceptar"></td>
+					</tr>
+					<tr>
+						<td colspan="2" height="70px" class="TextoNegrita" align="center">&nbsp;
+						<%if Trim(Request.QueryString("UNT"))<>"" then%>
+						Usuario/contraseña incorrecto
+						<%end if%>
+						<%if Trim(Request.QueryString("UNTZ"))<>"" then%>
+						El usuario ya está conectado<br>
+						Forzar conexión:<input type="checkbox" value="1" name="idForzar" class="checkbox">
+						<%end if%>
+						</td>
+					</tr>
+				</table></form>
+			</td>
+		</tr>
+		<tr>
+			<td class="Texto"  height="45%" >&nbsp;</td>
+		</tr>
+	</table>
+
+</body>
+</html>

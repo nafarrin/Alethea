@@ -1,0 +1,91 @@
+<%@LANGUAGE="VBSCRIPT" CODEPAGE="1252"%>
+<!--#include file="includesSQL/Funciones.asp" -->
+<%
+
+
+Dim cnVersion
+'cnVersion = "Provider=sqloledb;Persist Security Info=False;Connect Timeout=60; Data Source=localhost;Initial Catalog=SPRINT;User Id=SPRINTUser;Password=SPRINTUser;"
+cnVersion = "Provider=sqloledb;Persist Security Info=False;Connect Timeout=60; Data Source=DELPHIN-PC\SQL2K;Initial Catalog=SPRINT;User Id=SPRINTUser;Password=SPRINTUser;"
+
+dim rsVersion
+dim sqlQuery
+
+sqlQuery="SELECT BBDD, Version, Color, BBDDOLAP, WEB, DTSExportacionOLAP FROM Instalaciones ORDER BY Prioridad desc,  Version"
+AbrirRecordSet rsVersion, sqlQuery , cnVersion
+%>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>SPRINT</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="css/Web.css" rel="stylesheet" type="text/css">
+<script language="javascript">
+window.status="Delphin Project Hunting";
+function Enviar(){
+	var CarpetaDestino;
+	try {
+		document.frmNavegar.BBDDOLAP.value=document.frmNavegar.idVersion.options(document.frmNavegar.idVersion.selectedIndex).getAttribute("OLAP");
+	} catch (e) {
+		document.frmNavegar.BBDDOLAP.value=document.frmNavegar.idVersion.options[document.frmNavegar.idVersion.selectedIndex].getAttribute("OLAP");
+	
+	}
+	document.frmNavegar.DTSExportacionOLAP.value=document.frmNavegar.idVersion.options(document.frmNavegar.idVersion.selectedIndex).getAttribute("DTSExportacionOLAP");
+	CarpetaDestino=document.frmNavegar.idVersion.options(document.frmNavegar.idVersion.selectedIndex).getAttribute("WEBDestino");
+	document.frmNavegar.WEBDestino.value=CarpetaDestino;
+	if (CarpetaDestino=="") {
+		document.frmNavegar.action="_ConectarBBDD.asp";
+	}
+	else{
+		document.frmNavegar.action="../" + CarpetaDestino + "/_ConectarBBDD.asp";
+	}
+	document.frmNavegar.submit();
+}
+</script>
+</head>
+<body>
+<table width="100%" height="100%" >
+		<tr>
+		    <td height="45%" class="Texto" align="center">********Desde esta web se tiene acceso al front-end de desarrollo.<br>Dependiendo de la Base de datos a la que se conecte algunas pantallas pueden no funcionar.</td>
+		</tr>
+		<tr>
+			<td  align="center">
+				<form action="" method="post"  name="frmNavegar">
+				<table width="419" height="289" background="imgLogos/Inicio.jpg">
+					<tr>
+						<td width="50%" height="150px">&nbsp;</td>
+						<td width="50%">&nbsp;</td>
+					</tr>
+					<tr>
+						<td class="Texto" align="right" nowrap="nowrap">&nbsp;&nbsp;&nbsp;&nbsp;Base de datos de conexión:</td>
+						<td >
+							<select name="idVersion">
+								<%while not rsVersion.eof%>
+								<option value="<%=(rsVersion.Fields.Item("BBDD").Value)%>" OLAP="<%=(rsVersion.Fields.Item("BBDDOLAP").Value)%>"  DTSExportacionOLAP="<%=(rsVersion.Fields.Item("DTSExportacionOLAP").Value)%>" WEBDestino="<%=(rsVersion.Fields.Item("WEB").Value)%>" style="background-color:#<%=(rsVersion.Fields.Item("Color").Value)%>; background-image:url(img/Apartado.gif); background-repeat:no-repeat"><%=(rsVersion.Fields.Item("Version").Value)%></option>
+								<%
+									rsVersion.movenext
+								wend
+								%>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><input class="button" name="btnAceptar" type="button" value="Aceptar" onClick="Enviar()"></td>
+					</tr>
+					<tr><td></td></tr>
+				</table>
+				<input type="hidden" name="BBDDOLAP" value="">
+				<input type="hidden" name="DTSExportacionOLAP" value="">
+				<input type="hidden" name="WEBDestino" value="">
+				</form>
+			</td>
+		</tr>
+		<tr>
+			<td class="Texto"  height="45%" >&nbsp;</td>
+		</tr>
+	</table>
+
+</body>
+<%
+CerrarRecordSet rsVersion
+%>
+</html>
